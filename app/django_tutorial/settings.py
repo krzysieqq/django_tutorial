@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+env = os.environ
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+ROOT_DIR = os.path.dirname(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -74,9 +76,13 @@ WSGI_APPLICATION = 'django_tutorial.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.get("DB_NAME", "postgres"),
+        "USER": env.get("DB_USER", "postgres"),
+        "PASSWORD": env.get("DB_PASS", "postgres"),
+        "HOST": env.get("DB_HOST", "db"),
+        "PORT": env.get("DB_PORT", "5432"),
     }
 }
 
@@ -117,4 +123,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(ROOT_DIR, 'static')
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(ROOT_DIR, 'media')
+MEDIA_URL = '/media/'
