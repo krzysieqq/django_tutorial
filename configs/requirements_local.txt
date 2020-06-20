@@ -1,0 +1,3 @@
+wdb
+django-debug-toolbar
+django-silk

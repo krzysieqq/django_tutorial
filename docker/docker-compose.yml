@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ${CI_REGISTRY:-localhost}/krzysieqq/django_tutorial:${RELEASE_VERSION:-local}
+    command: ./entrypoint.sh
+    env_file: ../envs/.env_${ENVIRONMENT:-local}
+    restart: always
+    volumes:
+      - django_tutorial_static:/code/static/
+      - django_tutorial_media:/code/media/
+    depends_on:
+      - db
+    links:
+      - db
+  db:
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+  web:
+    image: nginx:latest
+    restart: always
+    volumes:
+      - ../local/logs/nginx/:/var/log/nginx/
+      - django_tutorial_static:/var/www/static/
+      - django_tutorial_media:/var/www/media/
+    depends_on:
+      - backend
+    links:
+      - backend
+volumes:
+  postgres_data:
+  django_tutorial_static:
+  django_tutorial_media:

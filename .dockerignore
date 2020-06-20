@@ -1,0 +1,8 @@
+.idea
+.git*
+.env_*
+docker-compose*
+docker/Dockerfile
+envs/
+*local*
+docker_images/
