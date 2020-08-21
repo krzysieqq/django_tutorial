@@ -3,6 +3,6 @@
 .env.*
 docker-compose*
 docker/Dockerfile
-envs/
 *local*
+!requirements.local.txt
 docker_images/

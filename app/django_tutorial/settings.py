@@ -23,7 +23,7 @@ ROOT_DIR = os.path.dirname(BASE_DIR)
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "fd!2nv^j*z72^o1r*sj00#4d+@m1!zl^crp9-ya1e6ek^ivh$%"
+SECRET_KEY = env.get("DJANGO_SECRET_KEY", "")
 
 
 def str_to_bool(value):
@@ -33,7 +33,7 @@ def str_to_bool(value):
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = str_to_bool(env.get("DEBUG", "False"))
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = env.get("DJANGO_ALLOWED_HOSTS", [])
 
 # Application definition
 DJANGO_APPS = [

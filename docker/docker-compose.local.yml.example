@@ -5,8 +5,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    command: /code/docker/entrypoint.local.sh.example
-    env_file: ../envs/.env.local.example
+    command: /code/docker/entrypoint.local.sh
+    env_file: ../envs/.env.local
     volumes:
       - ../app/:/code/app/
       - ../docker/:/code/docker/

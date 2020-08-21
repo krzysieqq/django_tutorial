@@ -21,7 +21,8 @@ Repository can be cloned by one of following commands:
 Upon cloning the repository `django-tutorial` project can be built and ran using commands:
 
 1. `./run.sh -i` to install local development components and build docker image
-2. `./run.sh -u` to start local containers
+2. `./run.sh -u` to start local containers with follow output or `./run.sh -u` without output
+3. Optional. If you'd like to create super user account run `./run.sh -csu <password>` f.g. `./run.sh -csu admin`. Default admin username is `admin`.
 
 Script will pull and build all required docker images of `django-tutorial`, as well as run all required commands from 
 `entrypoint.local.sh` and install packages from `requirements.local.txt` used only for local development.
@@ -29,11 +30,6 @@ Script will pull and build all required docker images of `django-tutorial`, as w
 Local web address: `http://localhost:8000/` \
 Django Admin Panel address: `http://localhost:8000/admin` \
 WDB address: `http://localhost:1984`
-
-Default local admin login credentials are:
-
-username: `admin`\
-password: `admin`
     
 Tests
 -----
@@ -54,6 +50,8 @@ Instructions
 ./run.sh build|-b <optional params>           -> BUILD containers
 ./run.sh build-force|-bf <optional params>    -> Force build containers (with params no-cache, pull)
 ./run.sh custom_command|-cc                   -> Custom docker-compose command
+./run.sh create_django_secret|-crs            -> Create Django Secret Key
+./run.sh create_superuser|-csu                -> Create default super user
 ./run.sh down|-dn                             -> DOWN (stop and remove) containers
 ./run.sh downv|-dnv                           -> DOWN (stop and remove with volumes) containers
 ./run.sh help|-h                              -> Show this help message

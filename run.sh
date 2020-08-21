@@ -14,6 +14,8 @@ case $1 in
   echo "./run.sh build|-b <optional params>           -> BUILD containers"
   echo "./run.sh build-force|-bf <optional params>    -> Force build containers (with params no-cache, pull)"
   echo "./run.sh custom_command|-cc                   -> Custom docker-compose command"
+  echo "./run.sh create_django_secret|-crs            -> Create Django Secret Key"
+  echo "./run.sh create_superuser|-csu <password>     -> Create default super user"
   echo "./run.sh down|-dn                             -> DOWN (stop and remove) containers"
   echo "./run.sh downv|-dnv                           -> DOWN (stop and remove with volumes) containers"
   echo "./run.sh help|-h                              -> Show this help message"
@@ -48,6 +50,10 @@ case $1 in
   compose ${@:2}
   exit
   ;;
+  create_django_secret|-crs)
+  compose ${@:2}
+  exit
+  ;;
   down|-dn)
   compose down
   exit
@@ -68,6 +74,16 @@ case $1 in
     cp "$f" "${f::-8}"
   done
   compose build
+  DJANGO_SECRET_KEY=$(echo "from django.core.management.utils import get_random_secret_key;print(get_random_secret_key())" | ./run.sh -cc run --no-deps --rm backend django-admin shell)
+  sed -i 's|DJANGO_SECRET_KEY=""|DJANGO_SECRET_KEY="'"$DJANGO_SECRET_KEY"'"|' ./envs/.env.local
+  exit
+  ;;
+  create_superuser|-csu)
+  if [[ -z "$2" ]]; then
+    echo -e "You must provide an admin password as param f.g. \n$ ./run.sh -csu admin"
+    exit
+  fi
+  echo "import os; from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', 'admin@email.com', '$2') if not User.objects.filter(username='admin').exists() else print('Admin account exist.')" | compose exec -T $MAIN_CONTAINER "python manage.py shell"
   exit
   ;;
   logs|-l)
