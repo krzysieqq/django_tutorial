@@ -10,6 +10,6 @@ python manage.py migrate --noinput
 echo "${0}: collecting statics."
 python manage.py collectstatic --noinput
 
-echo "${0}: starting PyLog."
-uwsgi --ini /pylog/configs/uwsgi.ini
+echo "${0}: starting Django Tutorial."
+uwsgi --ini /code/configs/uwsgi.ini
 "$@"

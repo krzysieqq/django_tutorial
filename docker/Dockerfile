@@ -40,7 +40,7 @@ FROM prod as local
 
 USER root
 
-COPY configs/requirements_local.txt /code/configs/requirements.local.txt
+COPY configs/requirements.local.txt /code/configs/requirements.local.txt
 RUN pip install --no-cache-dir -r /code/configs/requirements.local.txt
 
 USER user

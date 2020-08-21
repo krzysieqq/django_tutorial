@@ -3,33 +3,35 @@
 MAIN_CONTAINER=backend
 
 function compose() {
-  CI_REGISTRY=localhost RELEASE_VERSION=local docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose-local.yml -p pylog $@
+  CI_REGISTRY=localhost RELEASE_VERSION=local docker-compose -f ./docker/docker-compose.yml -f ./docker/docker-compose.local.yml -p django-tutorial $@
 }
 
 case $1 in
   help|-h|--help)
   echo "Usage:"
-  echo "./run.sh                                       -> UP containers in detach mode"
-  echo "./run.sh bash|-sh                              -> Open bash in main container"
-  echo "./run.sh build|-b <optional params>            -> BUILD containers"
-  echo "./run.sh build-force|-bf <optional params>     -> Force build containers (no-cache, pull)"
-  echo "./run.sh custom_command|-cc                    -> Custom docker-compose command"
-  echo "./run.sh down|-dn                              -> DOWN (stop and remove) containers"
-  echo "./run.sh downv|-dnv                            -> DOWN (stop and remove with volumes) containers"
-  echo "./run.sh logs|-l <optional params>             -> LOGS from ALL containers"
-  echo "./run.sh logsf|-lf <optional params>           -> LOGS from ALL containers with follow"
-  echo "./run.sh shell|-sl                             -> Open shell in main container"
-  echo "./run.sh shell_plus|-sp                        -> Open shell plus (from django_extensions) in main container"
-  echo "./run.sh makemigrate|-mm <optional params>     -> make migrations and migrate inside containers"
-  echo "./run.sh notebook|-nb                          -> Run notebook"
-  echo "./run.sh recreate|-rec <optional params>       -> Up and recreate containers"
-  echo "./run.sh recreated|-recd <optional params>     -> Up and recreate containers in detach mode"
-  echo "./run.sh restart|-r <optional params>          -> RESTART containers"
-  echo "./run.sh rm|-rm <optional params>              -> Remove force container"
-  echo "./run.sh stop|-s <optional params>             -> STOP containers"
-  echo "./run.sh test|-t <optional params>             -> Run tests from run_pytests.sh"
-  echo "./run.sh up|-u <optional params>               -> UP containers with output"
-    ;;
+  echo "./run.sh                                      -> UP containers in detach mode"
+  echo "./run.sh bash|-sh                             -> Open bash in main container"
+  echo "./run.sh build|-b <optional params>           -> BUILD containers"
+  echo "./run.sh build-force|-bf <optional params>    -> Force build containers (with params no-cache, pull)"
+  echo "./run.sh custom_command|-cc                   -> Custom docker-compose command"
+  echo "./run.sh down|-dn                             -> DOWN (stop and remove) containers"
+  echo "./run.sh downv|-dnv                           -> DOWN (stop and remove with volumes) containers"
+  echo "./run.sh help|-h                              -> Show this help message"
+  echo "./run.sh install|-i                           -> Install local development setup"
+  echo "./run.sh logs|-l <optional params>            -> LOGS from ALL containers"
+  echo "./run.sh logsf|-lf <optional params>          -> LOGS from ALL containers with follow option"
+  echo "./run.sh shell|-sl                            -> Open shell in main container"
+  echo "./run.sh shell_plus|-sp                       -> Open shell plus (only if django_extensions installed) in main container"
+  echo "./run.sh makemigrate|-mm <optional params>    -> Make migrations and migrate inside main container"
+  echo "./run.sh notebook|-nb                         -> Run notebook (only if django_extensions installed)"
+  echo "./run.sh recreate|-rec <optional params>      -> Up and recreate containers"
+  echo "./run.sh recreated|-recd <optional params>    -> Up and recreate containers in detach mode"
+  echo "./run.sh restart|-r <optional params>         -> Restart containers"
+  echo "./run.sh rm|-rm <optional params>             -> Remove force container"
+  echo "./run.sh stop|-s <optional params>            -> Stop containers"
+  echo "./run.sh test|-t <optional params>            -> Run tests from run_pytests.sh"
+  echo "./run.sh up|-u <optional params>              -> UP containers with output"
+  ;;
   bash|-sh)
   compose exec $MAIN_CONTAINER bash
   exit
@@ -52,6 +54,20 @@ case $1 in
   ;;
   downv|-dnv)
   compose down -v
+  exit
+  ;;
+  install|-i)
+  LOCAL_FILES="
+  ./app/django_tutorial/local_settings.py.example
+  ./envs/.env.local.example
+  ./docker/docker-compose.local.yml.example
+  ./docker/entrypoint.local.sh.example
+  ./configs/requirements.local.txt.example"
+  for f in $LOCAL_FILES
+  do
+    cp "$f" "${f::-8}"
+  done
+  compose build
   exit
   ;;
   logs|-l)

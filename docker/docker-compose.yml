@@ -4,7 +4,7 @@ services:
   backend:
     image: ${CI_REGISTRY:-localhost}/krzysieqq/django_tutorial:${RELEASE_VERSION:-local}
     command: ./entrypoint.sh
-    env_file: ../envs/.env_${ENVIRONMENT:-local}
+    env_file: ../envs/.env.${ENVIRONMENT:-local}
     restart: always
     volumes:
       - django_tutorial_static:/code/static/
@@ -24,7 +24,6 @@ services:
     image: nginx:latest
     restart: always
     volumes:
-      - ../local/logs/nginx/:/var/log/nginx/
       - django_tutorial_static:/var/www/static/
       - django_tutorial_media:/var/www/media/
     depends_on:

@@ -5,8 +5,8 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    command: /code/docker/entrypoint_local.sh
-    env_file: ../envs/.env_local
+    command: /code/docker/entrypoint.local.sh.example
+    env_file: ../envs/.env.local.example
     volumes:
       - ../app/:/code/app/
       - ../docker/:/code/docker/
@@ -22,4 +22,4 @@ services:
   wdb:
     image: kozea/wdb:latest
     ports:
-      - "1980:1984"
+      - "1984:1984"
