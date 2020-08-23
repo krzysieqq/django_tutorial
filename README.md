@@ -67,7 +67,7 @@ Instructions
 ./run.sh restart|-r <optional params>         -> Restart containers
 ./run.sh rm|-rm <optional params>             -> Remove force container
 ./run.sh stop|-s <optional params>            -> Stop containers
-./run.sh test|-t <optional params>            -> Run tests from run_pytests.sh
+./run.sh test|-t <optional params>            -> Run tests
 ./run.sh up|-u <optional params>              -> UP containers with output
 ```
 

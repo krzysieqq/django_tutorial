@@ -31,7 +31,7 @@ case $1 in
   echo "./run.sh restart|-r <optional params>         -> Restart containers"
   echo "./run.sh rm|-rm <optional params>             -> Remove force container"
   echo "./run.sh stop|-s <optional params>            -> Stop containers"
-  echo "./run.sh test|-t <optional params>            -> Run tests from run_pytests.sh"
+  echo "./run.sh test|-t <optional params>            -> Run tests"
   echo "./run.sh up|-u <optional params>              -> UP containers with output"
   ;;
   bash|-sh)
@@ -132,7 +132,7 @@ case $1 in
   exit
   ;;
   test|-t)
-  compose exec $MAIN_CONTAINER "pytest ${@:2}"
+  compose exec $MAIN_CONTAINER "python manage.py test ${@:2}"
   exit
   ;;
   up|-u)
